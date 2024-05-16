@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  guiachatgpt:
+    image: honkit/honkit
+    init: true
+    command: honkit serve
+    working_dir: /workspace
+    volumes:
+      - /var/lib/docker/volumes/guiachatgpt:/workspace
+    ports:
+      - "4002:4000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
